@@ -2,4 +2,33 @@ name: CDN Traffic Generator
 
 on:
   workflow_dispatch:
-...
+
+jobs:
+  generate-traffic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate CDN traffic
+        run: |
+          CDN="http://19ea6450da03081f.kinxzone.com"
+          TOTAL=0
+          COUNT=0
+
+          echo "CDN 트래픽 발생 시작..."
+
+          for i in $(seq 1 300); do
+            for path in "/" "/style.css" "/app.js" "/images/sample.svg"; do
+              BYTES=$(curl -s -o /dev/null -w "%{size_download}" \
+                -A "Mozilla/5.0 (GitHubActions)" \
+                "${CDN}${path}" 2>/dev/null || echo 0)
+              TOTAL=$((TOTAL + BYTES))
+              COUNT=$((COUNT + 1))
+            done
+
+            if [ $((i % 50)) -eq 0 ]; then
+              MB=$(echo "scale=3; $TOTAL/1048576" | bc)
+              echo "[$i/300] 누적 트래픽: ${MB}MB (요청 수: ${COUNT}건)"
+            fi
+          done
+
+          MB=$(echo "scale=3; $TOTAL/1048576" | bc)
+          echo "완료! 총 트래픽: ${MB}MB / 총 요청: ${COUNT}건"
