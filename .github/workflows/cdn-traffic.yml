@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Generate CDN traffic
         run: |
-          CDN="http://1a0c281b118eb47b.kinxzone.com"
+          CDN="http://1a0cc9e31be17d00.kinxzone.com"
           TOTAL=0
           COUNT=0
 
