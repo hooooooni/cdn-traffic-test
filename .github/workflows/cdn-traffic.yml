@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Generate CDN traffic
         run: |
-          CDN="http://1a0e72217b17bb11.kinxzone.com"
+          CDN="http://19f8deccb4bfca80.kinxzone.com"
           TOTAL=0
           echo "해외 CDN 트래픽 발생 시작..."
 
